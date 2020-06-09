@@ -1,7 +1,7 @@
-from PyQt5.QtWidgets import *
-from PyQt5 import uic
-from PyQt5.QtGui import *
-
+##from PyQt5.QtWidgets import *
+##from PyQt5 import uic
+##from PyQt5.QtGui import *
+import cv2
 import numpy as np
 
 fscale=5
@@ -65,18 +65,21 @@ def laplacian_filter(gray_arr):
             laplacian=np.dot(sample_pad,laplacian_arr4)
             laplacian_arr[j-1, i-1]=laplacian.sum()
 
+    for i in range(0,y):
+        for i in range(0,x):
+            if(laplacian_arr[j,i]*laplacian_arr[j+1,i]<0):
+                laplacian_arr[j,i]=255
+
     return laplacian_arr
 
+if __name__=="__main__":
+    src=cv2.imread("data/fruits.png")
+    image=cv2.cvtColor(src,cv2.COLOR_BGR2RGB)
 
-    
+    gray_image=Grayscale(image)
+    gaussian_image=Gaussian(image)
 
-
-
-
-
-
-    #model_arr=np.zeros(x+h_scale,x+h_scale)
-
-
-
-
+    cv2.imshow('gray_image',gray_image.astype(np.uint8))
+    cv2.imshow('gaussian_image',gaussian_image.astype(np.uint8))
+    cv2.waitKey(0)
+    # cv2.destroyAllWindows()
